@@ -60,4 +60,16 @@ public class HospitalControllerTest {
 		inOrder.verify(patientRepository).save(patient);
 		inOrder.verify(patientView).patientAdded(patient);
 	}
+
+	@Test
+	public void testNewPatientWhenPatientAlreadyExists() {
+		Patient patientToAdd = new Patient("5", "Viviana");
+		Patient existingPatient = new Patient("5", "Giuseppe");
+		when(patientRepository.findById("5")).
+			thenReturn(existingPatient);
+		hospitalController.newPatient(patientToAdd);
+		verify(patientView)
+			.showError("Already existing patient with id 5", existingPatient);
+		verifyNoMoreInteractions(ignoreStubs(patientRepository));
+	}
 }
