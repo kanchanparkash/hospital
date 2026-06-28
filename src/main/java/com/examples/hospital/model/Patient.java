@@ -32,6 +32,11 @@ public class Patient {
 	}
 
 	@Override
+	public int hashCode() {
+		return Objects.hash(id, name);
+	}
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
