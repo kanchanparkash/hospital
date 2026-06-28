@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -47,5 +48,16 @@ public class HospitalControllerTest {
 		hospitalController.allPatients();
 		verify(patientView)
 			.showAllPatients(patients);
+	}
+
+	@Test
+	public void testNewPatientWhenPatientDoesNotAlreadyExist() {
+		Patient patient = new Patient("4", "Viviana");
+		when(patientRepository.findById("4")).
+			thenReturn(null);
+		hospitalController.newPatient(patient);
+		InOrder inOrder = inOrder(patientRepository, patientView);
+		inOrder.verify(patientRepository).save(patient);
+		inOrder.verify(patientView).patientAdded(patient);
 	}
 }
