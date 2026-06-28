@@ -83,4 +83,15 @@ public class HospitalControllerTest {
 		inOrder.verify(patientRepository).delete("6");
 		inOrder.verify(patientView).patientRemoved(patientToDelete);
 	}
+
+	@Test
+	public void testDeletePatientWhenPatientDoesNotExist() {
+		Patient patient = new Patient("7", "Giuseppe");
+		when(patientRepository.findById("7")).
+			thenReturn(null);
+		hospitalController.deletePatient(patient);
+		verify(patientView)
+			.showErrorPatientNotFound("No existing patient with id 7", patient);
+		verifyNoMoreInteractions(ignoreStubs(patientRepository));
+	}
 }
