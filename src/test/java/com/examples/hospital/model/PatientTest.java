@@ -7,6 +7,14 @@ import org.junit.Test;
 public class PatientTest {
 
 	@Test
+	public void testToString() {
+		Patient patient = new Patient("3", "Viviana");
+
+		assertThat(patient)
+			.hasToString("Patient [id=3, name=Viviana]");
+	}
+
+	@Test
 	public void testEquals() {
 		Patient patient = new Patient("1", "Marco");
 		Patient samePatient = new Patient("1", "Marco");
