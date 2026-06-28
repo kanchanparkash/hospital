@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.examples.hospital.model.Patient;
 import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoCollection;
@@ -60,5 +61,22 @@ public class PatientMongoRepositoryTest {
 	@Test
 	public void testFindAllWhenDatabaseIsEmpty() {
 		assertThat(patientRepository.findAll()).isEmpty();
+	}
+
+	@Test
+	public void testFindAllWhenDatabaseIsNotEmpty() {
+		addTestPatientToDatabase("8", "Marco");
+		addTestPatientToDatabase("9", "Viviana");
+		assertThat(patientRepository.findAll())
+			.containsExactly(
+				new Patient("8", "Marco"),
+				new Patient("9", "Viviana"));
+	}
+
+	private void addTestPatientToDatabase(String id, String name) {
+		patientCollection.insertOne(
+				new Document()
+					.append("id", id)
+					.append("name", name));
 	}
 }
