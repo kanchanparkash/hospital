@@ -17,4 +17,14 @@ public class PatientTest {
 		assertThat(patient.getName())
 			.isEqualTo("Mario Rossi");
 	}
+
+	@Test
+	public void testConstructorAndGetters() {
+		Patient patient = new Patient("1", "Mario Rossi");
+
+		assertThat(patient.getId())
+			.isEqualTo("1");
+		assertThat(patient.getName())
+			.isEqualTo("Mario Rossi");
+	}
 }
