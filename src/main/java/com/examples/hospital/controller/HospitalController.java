@@ -30,10 +30,14 @@ public class HospitalController {
 	}
 
 	public void deletePatient(Patient patient) {
-		if (patientRepository.findById(patient.getId()) != null) {
-			patientRepository.delete(patient.getId());
-			patientView.patientRemoved(patient);
+		if (patientRepository.findById(patient.getId()) == null) {
+			patientView.showErrorPatientNotFound("No existing patient with id " + patient.getId(),
+					patient);
+			return;
 		}
+
+		patientRepository.delete(patient.getId());
+		patientView.patientRemoved(patient);
 	}
 
 }

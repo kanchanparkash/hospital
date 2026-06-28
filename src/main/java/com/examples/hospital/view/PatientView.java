@@ -14,4 +14,6 @@ public interface PatientView {
 
 	void patientRemoved(Patient patient);
 
+	void showErrorPatientNotFound(String message, Patient patient);
+
 }
