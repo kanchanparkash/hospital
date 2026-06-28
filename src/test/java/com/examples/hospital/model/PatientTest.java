@@ -10,21 +10,30 @@ public class PatientTest {
 	public void testEmptyConstructorAndSetters() {
 		Patient patient = new Patient();
 		patient.setId("1");
-		patient.setName("Mario Rossi");
+		patient.setName("Marco");
 
 		assertThat(patient.getId())
 			.isEqualTo("1");
 		assertThat(patient.getName())
-			.isEqualTo("Mario Rossi");
+			.isEqualTo("Marco");
 	}
 
 	@Test
 	public void testConstructorAndGetters() {
-		Patient patient = new Patient("1", "Mario Rossi");
+		Patient patient = new Patient("1", "Marco");
 
 		assertThat(patient.getId())
 			.isEqualTo("1");
 		assertThat(patient.getName())
-			.isEqualTo("Mario Rossi");
+			.isEqualTo("Marco");
+	}
+
+	@Test
+	public void testEquals() {
+		Patient patient = new Patient("1", "Marco");
+		Patient samePatient = new Patient("1", "Marco");
+
+		assertThat(patient)
+			.isEqualTo(samePatient);
 	}
 }
