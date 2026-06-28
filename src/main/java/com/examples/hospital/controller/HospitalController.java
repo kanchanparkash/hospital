@@ -29,4 +29,11 @@ public class HospitalController {
 		patientView.patientAdded(patient);
 	}
 
+	public void deletePatient(Patient patient) {
+		if (patientRepository.findById(patient.getId()) != null) {
+			patientRepository.delete(patient.getId());
+			patientView.patientRemoved(patient);
+		}
+	}
+
 }

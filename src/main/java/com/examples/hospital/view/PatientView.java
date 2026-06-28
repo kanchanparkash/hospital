@@ -12,4 +12,6 @@ public interface PatientView {
 
 	void patientAdded(Patient patient);
 
+	void patientRemoved(Patient patient);
+
 }

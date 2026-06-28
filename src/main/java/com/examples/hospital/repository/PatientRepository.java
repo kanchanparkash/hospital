@@ -10,4 +10,6 @@ public interface PatientRepository {
 	public Patient findById(String id);
 
 	public void save(Patient patient);
+
+	public void delete(String id);
 }
