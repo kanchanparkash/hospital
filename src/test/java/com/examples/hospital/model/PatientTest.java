@@ -7,14 +7,28 @@ import org.junit.Test;
 public class PatientTest {
 
 	@Test
-	public void testEmptyConstructorAndSetters() {
-		Patient patient = new Patient();
-		patient.setId("1");
-		patient.setName("Mario Rossi");
+	public void testToString() {
+		Patient patient = new Patient("3", "Viviana");
 
-		assertThat(patient.getId())
-			.isEqualTo("1");
-		assertThat(patient.getName())
-			.isEqualTo("Mario Rossi");
+		assertThat(patient)
+			.hasToString("Patient [id=3, name=Viviana]");
+	}
+
+	@Test
+	public void testEquals() {
+		Patient patient = new Patient("1", "Marco");
+		Patient samePatient = new Patient("1", "Marco");
+
+		assertThat(patient)
+			.isEqualTo(samePatient);
+	}
+
+	@Test
+	public void testHashCode() {
+		Patient patient = new Patient("2", "Giuseppe");
+		Patient samePatient = new Patient("2", "Giuseppe");
+
+		assertThat(patient)
+			.hasSameHashCodeAs(samePatient);
 	}
 }
