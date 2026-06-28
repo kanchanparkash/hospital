@@ -72,4 +72,15 @@ public class HospitalControllerTest {
 			.showError("Already existing patient with id 5", existingPatient);
 		verifyNoMoreInteractions(ignoreStubs(patientRepository));
 	}
+
+	@Test
+	public void testDeletePatientWhenPatientExists() {
+		Patient patientToDelete = new Patient("6", "Marco");
+		when(patientRepository.findById("6")).
+			thenReturn(patientToDelete);
+		hospitalController.deletePatient(patientToDelete);
+		InOrder inOrder = inOrder(patientRepository, patientView);
+		inOrder.verify(patientRepository).delete("6");
+		inOrder.verify(patientView).patientRemoved(patientToDelete);
+	}
 }
