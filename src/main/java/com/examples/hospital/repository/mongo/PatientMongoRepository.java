@@ -1,7 +1,8 @@
 package com.examples.hospital.repository.mongo;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 
@@ -22,22 +23,29 @@ public class PatientMongoRepository implements PatientRepository {
 
 	@Override
 	public List<Patient> findAll() {
-		return Collections.emptyList();
+		return StreamSupport.
+				stream(patientCollection.find().spliterator(), false)
+				.map(this::fromDocumentToPatient)
+				.collect(Collectors.toList());
+	}
+
+	private Patient fromDocumentToPatient(Document d) {
+		return new Patient(""+d.get("id"), ""+d.get("name"));
 	}
 
 	@Override
 	public Patient findById(String id) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void save(Patient patient) {
-
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public void delete(String id) {
-
+		throw new UnsupportedOperationException();
 	}
 
 }
