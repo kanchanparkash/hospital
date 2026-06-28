@@ -19,10 +19,14 @@ public class HospitalController {
 
 	public void newPatient(Patient patient) {
 		Patient existingPatient = patientRepository.findById(patient.getId());
-		if (existingPatient == null) {
-			patientRepository.save(patient);
-			patientView.patientAdded(patient);
+		if (existingPatient != null) {
+			patientView.showError("Already existing patient with id " + patient.getId(),
+					existingPatient);
+			return;
 		}
+
+		patientRepository.save(patient);
+		patientView.patientAdded(patient);
 	}
 
 }

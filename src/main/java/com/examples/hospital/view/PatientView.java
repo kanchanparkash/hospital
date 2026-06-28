@@ -8,6 +8,8 @@ public interface PatientView {
 
 	void showAllPatients(List<Patient> patients);
 
+	void showError(String message, Patient patient);
+
 	void patientAdded(Patient patient);
 
 }
