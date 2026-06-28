@@ -36,4 +36,13 @@ public class PatientTest {
 		assertThat(patient)
 			.isEqualTo(samePatient);
 	}
+
+	@Test
+	public void testHashCode() {
+		Patient patient = new Patient("2", "Giuseppe");
+		Patient samePatient = new Patient("2", "Giuseppe");
+
+		assertThat(patient)
+			.hasSameHashCodeAs(samePatient);
+	}
 }
