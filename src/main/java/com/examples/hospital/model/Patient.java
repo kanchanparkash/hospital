@@ -50,4 +50,10 @@ public class Patient {
 		Patient other = (Patient) obj;
 		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
 	}
+
+	@Override
+	public String toString() {
+		return "Patient [id=" + id + ", name=" + name + "]";
+	}
+
 }
