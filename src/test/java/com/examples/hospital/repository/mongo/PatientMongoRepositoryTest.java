@@ -3,6 +3,9 @@ package com.examples.hospital.repository.mongo;
 import static org.assertj.core.api.Assertions.*;
 
 import java.net.InetSocketAddress;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import org.junit.After;
@@ -87,10 +90,25 @@ public class PatientMongoRepositoryTest {
 			.isEqualTo(new Patient("11", "Viviana"));
 	}
 
+	@Test
+	public void testSave() {
+		Patient patient = new Patient("12", "Marco");
+		patientRepository.save(patient);
+		assertThat(readAllPatientsFromDatabase())
+			.containsExactly(patient);
+	}
+
 	private void addTestPatientToDatabase(String id, String name) {
 		patientCollection.insertOne(
 				new Document()
 					.append("id", id)
 					.append("name", name));
+	}
+
+	private List<Patient> readAllPatientsFromDatabase() {
+		return StreamSupport.
+			stream(patientCollection.find().spliterator(), false)
+				.map(d -> new Patient(""+d.get("id"), ""+d.get("name")))
+				.collect(Collectors.toList());
 	}
 }
