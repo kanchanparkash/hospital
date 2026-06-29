@@ -44,7 +44,10 @@ public class PatientMongoRepository implements PatientRepository {
 
 	@Override
 	public void save(Patient patient) {
-		throw new UnsupportedOperationException();
+		patientCollection.insertOne(
+			new Document()
+				.append("id", patient.getId())
+				.append("name", patient.getName()));
 	}
 
 	@Override
