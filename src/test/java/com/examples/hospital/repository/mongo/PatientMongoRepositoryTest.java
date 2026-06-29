@@ -79,6 +79,14 @@ public class PatientMongoRepositoryTest {
 			.isNull();
 	}
 
+	@Test
+	public void testFindByIdFound() {
+		addTestPatientToDatabase("10", "Giuseppe");
+		addTestPatientToDatabase("11", "Viviana");
+		assertThat(patientRepository.findById("11"))
+			.isEqualTo(new Patient("11", "Viviana"));
+	}
+
 	private void addTestPatientToDatabase(String id, String name) {
 		patientCollection.insertOne(
 				new Document()
