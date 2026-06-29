@@ -10,6 +10,7 @@ import com.examples.hospital.model.Patient;
 import com.examples.hospital.repository.PatientRepository;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.model.Filters;
 
 public class PatientMongoRepository implements PatientRepository {
 
@@ -35,6 +36,9 @@ public class PatientMongoRepository implements PatientRepository {
 
 	@Override
 	public Patient findById(String id) {
+		Document d = patientCollection.find(Filters.eq("id", id)).first();
+		if (d != null)
+			return fromDocumentToPatient(d);
 		return null;
 	}
 
