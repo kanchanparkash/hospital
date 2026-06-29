@@ -35,7 +35,7 @@ public class PatientMongoRepository implements PatientRepository {
 
 	@Override
 	public Patient findById(String id) {
-		throw new UnsupportedOperationException();
+		return null;
 	}
 
 	@Override
