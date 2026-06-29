@@ -98,6 +98,14 @@ public class PatientMongoRepositoryTest {
 			.containsExactly(patient);
 	}
 
+	@Test
+	public void testDelete() {
+		addTestPatientToDatabase("13", "Giuseppe");
+		patientRepository.delete("13");
+		assertThat(readAllPatientsFromDatabase())
+			.isEmpty();
+	}
+
 	private void addTestPatientToDatabase(String id, String name) {
 		patientCollection.insertOne(
 				new Document()
