@@ -52,7 +52,7 @@ public class PatientMongoRepository implements PatientRepository {
 
 	@Override
 	public void delete(String id) {
-		throw new UnsupportedOperationException();
+		patientCollection.deleteOne(Filters.eq("id", id));
 	}
 
 }
