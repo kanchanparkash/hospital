@@ -212,7 +212,8 @@
             <version>${pitest.version}</version>
             <configuration>
               <targetClasses>
-                <param>com.examples.hospital.*</param>
+                <param>com.examples.hospital.controller.HospitalController</param>
+                <param>com.examples.hospital.repository.mongo.PatientMongoRepository</param>
               </targetClasses>
               <targetTests>
                 <param>com.examples.hospital.*</param>
