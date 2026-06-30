@@ -1,5 +1,9 @@
 package com.examples.hospital.view.swing;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Arrays;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
@@ -59,5 +63,18 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 		deleteButton.requireEnabled();
 		window.list("patientList").clearSelection();
 		deleteButton.requireDisabled();
+	}
+
+	@Test
+	public void testsShowAllPatientsShouldAddPatientDescriptionsToTheList() {
+		Patient patient1 = new Patient("1", "Giuseppe Bianchi");
+		Patient patient2 = new Patient("2", "Maria Rossi");
+		GuiActionRunner.execute(
+			() -> patientSwingView.showAllPatients(
+					Arrays.asList(patient1, patient2))
+		);
+		String[] listContents = window.list().contents();
+		assertThat(listContents)
+			.containsExactly("1 - Giuseppe Bianchi", "2 - Maria Rossi");
 	}
 }
