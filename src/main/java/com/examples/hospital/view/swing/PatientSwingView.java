@@ -16,6 +16,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
 import com.examples.hospital.model.Patient;
@@ -35,6 +36,10 @@ public class PatientSwingView extends JFrame implements PatientView {
 	private JLabel lblErrorMessage;
 
 	private DefaultListModel<Patient> listPatientsModel;
+
+	DefaultListModel<Patient> getListPatientsModel() {
+		return listPatientsModel;
+	}
 
 	public PatientSwingView() {
 		setTitle("Patient View");
@@ -117,6 +122,9 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 		listPatientsModel = new DefaultListModel<>();
 		listPatients = new JList<>(listPatientsModel);
+		listPatients.addListSelectionListener(
+				e -> btnDeleteSelected.setEnabled(listPatients.getSelectedIndex() != -1));
+		listPatients.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listPatients.setName("patientList");
 		scrollPane.setViewportView(listPatients);
 
