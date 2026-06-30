@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -57,6 +59,16 @@ public class PatientSwingView extends JFrame implements PatientView {
 		contentPane.add(lblId, gbcLblId);
 
 		txtId = new JTextField();
+		KeyAdapter btnAddEnabler = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				btnAdd.setEnabled(
+					!txtId.getText().trim().isEmpty() &&
+					!txtName.getText().trim().isEmpty()
+				);
+			}
+		};
+		txtId.addKeyListener(btnAddEnabler);
 		txtId.setName("idTextBox");
 		GridBagConstraints gbcIdTextField = new GridBagConstraints();
 		gbcIdTextField.insets = new Insets(0, 0, 5, 0);
@@ -75,6 +87,7 @@ public class PatientSwingView extends JFrame implements PatientView {
 		contentPane.add(lblName, gbcLblName);
 
 		txtName = new JTextField();
+		txtName.addKeyListener(btnAddEnabler);
 		txtName.setName("nameTextBox");
 		GridBagConstraints gbcNameTextField = new GridBagConstraints();
 		gbcNameTextField.insets = new Insets(0, 0, 5, 0);
