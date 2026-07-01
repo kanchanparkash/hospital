@@ -151,6 +151,29 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 		window.label("errorMessageLabel").requireText(" ");
 	}
 
+	@Test
+	public void testPatientRemovedShouldRemoveThePatientFromTheListAndResetTheErrorLabel() {
+		Patient patient1 = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		Patient patient2 = new Patient("2", "Anna Verdi",
+				"Throat problem", "2026-07-02");
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Patient> listPatientsModel =
+						patientSwingView.getListPatientsModel();
+				listPatientsModel.addElement(patient1);
+				listPatientsModel.addElement(patient2);
+			}
+		);
+		GuiActionRunner.execute(
+			() -> patientSwingView.patientRemoved(patient1)
+		);
+		String[] listContents = window.list().contents();
+		assertThat(listContents)
+			.containsExactly("2 - Anna Verdi - Throat problem - 2026-07-02");
+		window.label("errorMessageLabel").requireText(" ");
+	}
+
 	private void enterPatientData(String id, String name, String problem, String admitDate) {
 		window.textBox("idTextBox").enterText(id);
 		window.textBox("nameTextBox").enterText(name);
