@@ -57,7 +57,10 @@ public class Patient {
 			return false;
 		}
 		Patient other = (Patient) obj;
-		return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+		return Objects.equals(id, other.id)
+				&& Objects.equals(name, other.name)
+				&& Objects.equals(problem, other.problem)
+				&& Objects.equals(admitDate, other.admitDate);
 	}
 
 	@Override
