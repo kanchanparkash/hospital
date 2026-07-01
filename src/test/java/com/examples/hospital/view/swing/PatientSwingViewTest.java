@@ -102,6 +102,17 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 					"2 - Anna Verdi - Throat problem - 2026-07-02");
 	}
 
+	@Test
+	public void testShowErrorShouldShowTheMessageInTheErrorLabel() {
+		Patient patient = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		GuiActionRunner.execute(
+			() -> patientSwingView.showError("error message", patient)
+		);
+		window.label("errorMessageLabel")
+			.requireText("error message: 1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
+	}
+
 	private void enterPatientData(String id, String name, String problem, String admitDate) {
 		window.textBox("idTextBox").enterText(id);
 		window.textBox("nameTextBox").enterText(name);
