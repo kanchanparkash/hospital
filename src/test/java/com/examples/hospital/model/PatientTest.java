@@ -18,11 +18,16 @@ public class PatientTest {
 
 	@Test
 	public void testEquals() {
-		Patient patient = new Patient("1", "Marco");
-		Patient samePatient = new Patient("1", "Marco");
+		Patient patient = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		Patient samePatient = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		Patient differentPatient = new Patient("1", "Giuseppe Bianchi",
+				"Throat problem", "2026-07-02");
 
 		assertThat(patient)
-			.isEqualTo(samePatient);
+			.isEqualTo(samePatient)
+			.isNotEqualTo(differentPatient);
 	}
 
 	@Test
