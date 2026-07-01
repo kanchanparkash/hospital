@@ -5,6 +5,8 @@ import java.util.Objects;
 public class Patient {
 	private String id;
 	private String name;
+	private String problem;
+	private String admitDate;
 
 	public Patient() {
 
@@ -13,6 +15,13 @@ public class Patient {
 	public Patient(String id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+
+	public Patient(String id, String name, String problem, String admitDate) {
+		this.id = id;
+		this.name = name;
+		this.problem = problem;
+		this.admitDate = admitDate;
 	}
 
 	public String getId() {
@@ -53,7 +62,8 @@ public class Patient {
 
 	@Override
 	public String toString() {
-		return "Patient [id=" + id + ", name=" + name + "]";
+		return "Patient [id=" + id + ", name=" + name + ", problem=" + problem
+				+ ", admitDate=" + admitDate + "]";
 	}
 
 }
