@@ -211,6 +211,7 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	@Override
 	public void showError(String message, Patient patient) {
+		lblErrorMessage.setText(message + ": " + getDisplayString(patient));
 	}
 
 	@Override
