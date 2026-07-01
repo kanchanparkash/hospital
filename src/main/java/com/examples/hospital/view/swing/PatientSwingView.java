@@ -224,6 +224,8 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	@Override
 	public void showErrorPatientNotFound(String message, Patient patient) {
+		lblErrorMessage.setText(message + ": " + getDisplayString(patient));
+		listPatientsModel.removeElement(patient);
 	}
 
 	private String getDisplayString(Patient patient) {
