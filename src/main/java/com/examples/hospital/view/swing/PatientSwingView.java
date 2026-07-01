@@ -222,6 +222,8 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	@Override
 	public void patientRemoved(Patient patient) {
+		listPatientsModel.removeElement(patient);
+		resetErrorLabel();
 	}
 
 	private void resetErrorLabel() {
