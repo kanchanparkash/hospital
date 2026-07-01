@@ -138,6 +138,19 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 			.containsExactly("2 - Anna Verdi - Throat problem - 2026-07-02");
 	}
 
+	@Test
+	public void testPatientAddedShouldAddThePatientToTheListAndResetTheErrorLabel() {
+		Patient patient = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		GuiActionRunner.execute(
+				() -> patientSwingView.patientAdded(patient)
+				);
+		String[] listContents = window.list().contents();
+		assertThat(listContents)
+			.containsExactly("1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
+		window.label("errorMessageLabel").requireText(" ");
+	}
+
 	private void enterPatientData(String id, String name, String problem, String admitDate) {
 		window.textBox("idTextBox").enterText(id);
 		window.textBox("nameTextBox").enterText(name);
