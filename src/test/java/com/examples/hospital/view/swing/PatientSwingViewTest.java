@@ -38,8 +38,12 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 	public void testControlsInitialStates() {
 		window.label(JLabelMatcher.withText("id"));
 		window.textBox("idTextBox").requireEnabled();
-		window.label(JLabelMatcher.withText("name"));
+		window.label(JLabelMatcher.withText("patient name"));
 		window.textBox("nameTextBox").requireEnabled();
+		window.label(JLabelMatcher.withText("problem"));
+		window.textBox("problemTextBox").requireEnabled();
+		window.label(JLabelMatcher.withText("admit date"));
+		window.textBox("admitDateTextBox").requireEnabled();
 		window.button(JButtonMatcher.withText("Add")).requireDisabled();
 		window.list("patientList");
 		window.button(JButtonMatcher.withText("Delete Selected")).requireDisabled();
@@ -47,16 +51,34 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 	}
 
 	@Test
-	public void testWhenIdAndNameAreNonEmptyThenAddButtonShouldBeEnabled() {
-		window.textBox("idTextBox").enterText("1");
-		window.textBox("nameTextBox").enterText("Giuseppe Bianchi");
+	public void testWhenAllFieldsAreNonEmptyThenAddButtonShouldBeEnabled() {
+		enterPatientData("1", "Giuseppe Bianchi", "Cardiac problem", "2026-07-01");
 		window.button(JButtonMatcher.withText("Add")).requireEnabled();
+	}
+
+	@Test
+	public void testWhenAnyFieldIsBlankThenAddButtonShouldBeDisabled() {
+		String[][] patientDataWithOneBlankField = {
+				{ " ", "Giuseppe Bianchi", "Cardiac problem", "2026-07-01" },
+				{ "1", " ", "Cardiac problem", "2026-07-01" },
+				{ "1", "Giuseppe Bianchi", " ", "2026-07-01" },
+				{ "1", "Giuseppe Bianchi", "Cardiac problem", " " }
+		};
+
+		for (String[] patientData : patientDataWithOneBlankField) {
+			enterPatientData(patientData[0], patientData[1],
+					patientData[2], patientData[3]);
+			window.button(JButtonMatcher.withText("Add")).requireDisabled();
+			clearPatientData();
+		}
 	}
 
 	@Test
 	public void testDeleteButtonShouldBeEnabledOnlyWhenAPatientIsSelected() {
 		GuiActionRunner.execute(
-			() -> patientSwingView.getListPatientsModel().addElement(new Patient("1", "Giuseppe Bianchi"))
+			() -> patientSwingView.getListPatientsModel().addElement(
+					new Patient("1", "Giuseppe Bianchi",
+							"Cardiac problem", "2026-07-01"))
 		);
 		window.list("patientList").selectItem(0);
 		JButtonFixture deleteButton = window.button(JButtonMatcher.withText("Delete Selected"));
@@ -67,14 +89,30 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	@Test
 	public void testsShowAllPatientsShouldAddPatientDescriptionsToTheList() {
-		Patient patient1 = new Patient("1", "Giuseppe Bianchi");
-		Patient patient2 = new Patient("2", "Maria Rossi");
+		Patient patient1 = new Patient("1", "Giuseppe Bianchi", "Cardiac problem", "2026-07-01");
+		Patient patient2 = new Patient("2", "Anna Verdi", "Throat problem", "2026-07-02");
 		GuiActionRunner.execute(
 			() -> patientSwingView.showAllPatients(
 					Arrays.asList(patient1, patient2))
 		);
 		String[] listContents = window.list().contents();
 		assertThat(listContents)
-			.containsExactly("1 - Giuseppe Bianchi", "2 - Maria Rossi");
+			.containsExactly(
+					"1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01",
+					"2 - Anna Verdi - Throat problem - 2026-07-02");
+	}
+
+	private void enterPatientData(String id, String name, String problem, String admitDate) {
+		window.textBox("idTextBox").enterText(id);
+		window.textBox("nameTextBox").enterText(name);
+		window.textBox("problemTextBox").enterText(problem);
+		window.textBox("admitDateTextBox").enterText(admitDate);
+	}
+
+	private void clearPatientData() {
+		window.textBox("idTextBox").setText("");
+		window.textBox("nameTextBox").setText("");
+		window.textBox("problemTextBox").setText("");
+		window.textBox("admitDateTextBox").setText("");
 	}
 }

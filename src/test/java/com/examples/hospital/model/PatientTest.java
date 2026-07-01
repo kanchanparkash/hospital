@@ -32,8 +32,10 @@ public class PatientTest {
 
 	@Test
 	public void testHashCode() {
-		Patient patient = new Patient("2", "Giuseppe");
-		Patient samePatient = new Patient("2", "Giuseppe");
+		Patient patient = new Patient("2", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		Patient samePatient = new Patient("2", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
 
 		assertThat(patient)
 			.hasSameHashCodeAs(samePatient);

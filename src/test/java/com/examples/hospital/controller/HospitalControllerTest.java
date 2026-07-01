@@ -42,7 +42,8 @@ public class HospitalControllerTest {
 
 	@Test
 	public void testAllPatients() {
-		List<Patient> patients = asList(new Patient());
+		List<Patient> patients = asList(new Patient("3", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01"));
 		when(patientRepository.findAll())
 			.thenReturn(patients);
 		hospitalController.allPatients();
@@ -52,7 +53,7 @@ public class HospitalControllerTest {
 
 	@Test
 	public void testNewPatientWhenPatientDoesNotAlreadyExist() {
-		Patient patient = new Patient("4", "Viviana");
+		Patient patient = new Patient("4", "Viviana", "Cardiac problem", "2026-07-01");
 		when(patientRepository.findById("4")).
 			thenReturn(null);
 		hospitalController.newPatient(patient);
@@ -63,8 +64,8 @@ public class HospitalControllerTest {
 
 	@Test
 	public void testNewPatientWhenPatientAlreadyExists() {
-		Patient patientToAdd = new Patient("5", "Viviana");
-		Patient existingPatient = new Patient("5", "Giuseppe");
+		Patient patientToAdd = new Patient("5", "Viviana", "Cardiac problem", "2026-07-01");
+		Patient existingPatient = new Patient("5", "Giuseppe", "Cardiac problem", "2026-07-01");
 		when(patientRepository.findById("5")).
 			thenReturn(existingPatient);
 		hospitalController.newPatient(patientToAdd);
@@ -75,7 +76,7 @@ public class HospitalControllerTest {
 
 	@Test
 	public void testDeletePatientWhenPatientExists() {
-		Patient patientToDelete = new Patient("6", "Marco");
+		Patient patientToDelete = new Patient("6", "Marco", "Cardiac problem", "2026-07-01");
 		when(patientRepository.findById("6")).
 			thenReturn(patientToDelete);
 		hospitalController.deletePatient(patientToDelete);
@@ -86,7 +87,7 @@ public class HospitalControllerTest {
 
 	@Test
 	public void testDeletePatientWhenPatientDoesNotExist() {
-		Patient patient = new Patient("7", "Giuseppe");
+		Patient patient = new Patient("7", "Giuseppe", "Cardiac problem", "2026-07-01");
 		when(patientRepository.findById("7")).
 			thenReturn(null);
 		hospitalController.deletePatient(patient);

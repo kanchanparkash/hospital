@@ -68,12 +68,12 @@ public class PatientMongoRepositoryTest {
 
 	@Test
 	public void testFindAllWhenDatabaseIsNotEmpty() {
-		addTestPatientToDatabase("8", "Marco");
-		addTestPatientToDatabase("9", "Viviana");
+		addTestPatientToDatabase("8", "Marco", "Cardiac problem", "2026-07-01");
+		addTestPatientToDatabase("9", "Viviana", "Cardiac problem", "2026-07-01");
 		assertThat(patientRepository.findAll())
 			.containsExactly(
-				new Patient("8", "Marco"),
-				new Patient("9", "Viviana"));
+				new Patient("8", "Marco", "Cardiac problem", "2026-07-01"),
+				new Patient("9", "Viviana", "Cardiac problem", "2026-07-01"));
 	}
 
 	@Test
@@ -84,15 +84,15 @@ public class PatientMongoRepositoryTest {
 
 	@Test
 	public void testFindByIdFound() {
-		addTestPatientToDatabase("10", "Giuseppe");
-		addTestPatientToDatabase("11", "Viviana");
+		addTestPatientToDatabase("10", "Giuseppe", "Cardiac problem", "2026-07-01");
+		addTestPatientToDatabase("11", "Viviana", "Cardiac problem", "2026-07-01");
 		assertThat(patientRepository.findById("11"))
-			.isEqualTo(new Patient("11", "Viviana"));
+			.isEqualTo(new Patient("11", "Viviana", "Cardiac problem", "2026-07-01"));
 	}
 
 	@Test
 	public void testSave() {
-		Patient patient = new Patient("12", "Marco");
+		Patient patient = new Patient("12", "Marco", "Cardiac problem", "2026-07-01");
 		patientRepository.save(patient);
 		assertThat(readAllPatientsFromDatabase())
 			.containsExactly(patient);
@@ -100,23 +100,27 @@ public class PatientMongoRepositoryTest {
 
 	@Test
 	public void testDelete() {
-		addTestPatientToDatabase("13", "Giuseppe");
+		addTestPatientToDatabase("13", "Giuseppe", "Cardiac problem", "2026-07-01");
 		patientRepository.delete("13");
 		assertThat(readAllPatientsFromDatabase())
 			.isEmpty();
 	}
 
-	private void addTestPatientToDatabase(String id, String name) {
+	private void addTestPatientToDatabase(String id, String name, String problem,
+			String admitDate) {
 		patientCollection.insertOne(
 				new Document()
 					.append("id", id)
-					.append("name", name));
+					.append("name", name)
+					.append("problem", problem)
+					.append("admitDate", admitDate));
 	}
 
 	private List<Patient> readAllPatientsFromDatabase() {
 		return StreamSupport.
 			stream(patientCollection.find().spliterator(), false)
-				.map(d -> new Patient(""+d.get("id"), ""+d.get("name")))
+				.map(d -> new Patient(""+d.get("id"), ""+d.get("name"),
+						""+d.get("problem"), ""+d.get("admitDate")))
 				.collect(Collectors.toList());
 	}
 }

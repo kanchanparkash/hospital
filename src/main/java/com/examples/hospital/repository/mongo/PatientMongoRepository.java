@@ -31,7 +31,8 @@ public class PatientMongoRepository implements PatientRepository {
 	}
 
 	private Patient fromDocumentToPatient(Document d) {
-		return new Patient(""+d.get("id"), ""+d.get("name"));
+		return new Patient(""+d.get("id"), ""+d.get("name"),
+				""+d.get("problem"), ""+d.get("admitDate"));
 	}
 
 	@Override
@@ -47,7 +48,9 @@ public class PatientMongoRepository implements PatientRepository {
 		patientCollection.insertOne(
 			new Document()
 				.append("id", patient.getId())
-				.append("name", patient.getName()));
+				.append("name", patient.getName())
+				.append("problem", patient.getProblem())
+				.append("admitDate", patient.getAdmitDate()));
 	}
 
 	@Override

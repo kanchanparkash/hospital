@@ -12,11 +12,6 @@ public class Patient {
 
 	}
 
-	public Patient(String id, String name) {
-		this.id = id;
-		this.name = name;
-	}
-
 	public Patient(String id, String name, String problem, String admitDate) {
 		this.id = id;
 		this.name = name;
@@ -40,9 +35,25 @@ public class Patient {
 		this.name = name;
 	}
 
+	public String getProblem() {
+		return problem;
+	}
+
+	public void setProblem(String problem) {
+		this.problem = problem;
+	}
+
+	public String getAdmitDate() {
+		return admitDate;
+	}
+
+	public void setAdmitDate(String admitDate) {
+		this.admitDate = admitDate;
+	}
+
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, name);
+		return Objects.hash(id, name, problem, admitDate);
 	}
 
 	@Override
