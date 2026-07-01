@@ -1,6 +1,7 @@
 package com.examples.hospital.view.swing;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,6 +9,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -122,6 +124,18 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 		listPatientsModel = new DefaultListModel<>();
 		listPatients = new JList<>(listPatientsModel);
+		listPatients.setCellRenderer(new DefaultListCellRenderer() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				Patient patient = (Patient) value;
+				return super.getListCellRendererComponent(list,
+					getDisplayString(patient),
+					index, isSelected, cellHasFocus);
+			}
+		});
 		listPatients.addListSelectionListener(
 				e -> btnDeleteSelected.setEnabled(listPatients.getSelectedIndex() != -1));
 		listPatients.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -150,6 +164,7 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	@Override
 	public void showAllPatients(List<Patient> patients) {
+		patients.stream().forEach(listPatientsModel::addElement);
 	}
 
 	@Override
@@ -166,5 +181,9 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	@Override
 	public void showErrorPatientNotFound(String message, Patient patient) {
+	}
+
+	private String getDisplayString(Patient patient) {
+		return patient.getId() + " - " + patient.getName();
 	}
 }
