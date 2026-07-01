@@ -196,6 +196,8 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 		btnDeleteSelected = new JButton("Delete Selected");
 		btnDeleteSelected.setEnabled(false);
+		btnDeleteSelected.addActionListener(
+				e -> hospitalController.deletePatient(listPatients.getSelectedValue()));
 		GridBagConstraints gbcBtnDeleteSelected = new GridBagConstraints();
 		gbcBtnDeleteSelected.insets = new Insets(0, 0, 5, 0);
 		gbcBtnDeleteSelected.gridwidth = 2;
