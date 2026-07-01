@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 
+import com.examples.hospital.controller.HospitalController;
 import com.examples.hospital.model.Patient;
 import com.examples.hospital.view.PatientView;
 
@@ -41,8 +42,14 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	private DefaultListModel<Patient> listPatientsModel;
 
+	private transient HospitalController hospitalController;
+
 	DefaultListModel<Patient> getListPatientsModel() {
 		return listPatientsModel;
+	}
+
+	public void setHospitalController(HospitalController hospitalController) {
+		this.hospitalController = hospitalController;
 	}
 
 	public PatientSwingView() {
@@ -148,6 +155,9 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 		btnAdd = new JButton("Add");
 		btnAdd.setEnabled(false);
+		btnAdd.addActionListener(
+				e -> hospitalController.newPatient(new Patient(txtId.getText(),
+						txtName.getText(), txtProblem.getText(), txtAdmitDate.getText())));
 		GridBagConstraints gbcBtnAdd = new GridBagConstraints();
 		gbcBtnAdd.insets = new Insets(0, 0, 5, 0);
 		gbcBtnAdd.gridwidth = 2;
