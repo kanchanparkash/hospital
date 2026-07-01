@@ -216,8 +216,11 @@
                 <param>com.examples.hospital.repository.mongo.PatientMongoRepository</param>
               </targetClasses>
               <targetTests>
-                <param>com.examples.hospital.*</param>
+                <param>com.examples.hospital.controller.*Test</param>
+                <param>com.examples.hospital.repository.mongo.*Test</param>
+                <param>com.examples.hospital.repository.mongo.*IT</param>
               </targetTests>
+              <parseSurefireConfig>false</parseSurefireConfig>
               <mutationThreshold>100</mutationThreshold>
               <coverageThreshold>100</coverageThreshold>
               <failWhenNoMutations>false</failWhenNoMutations>
