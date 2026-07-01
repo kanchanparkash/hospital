@@ -4,6 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
+import javax.swing.DefaultListModel;
+
 import org.assertj.swing.annotation.GUITest;
 import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.core.matcher.JLabelMatcher;
@@ -111,6 +113,29 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 		);
 		window.label("errorMessageLabel")
 			.requireText("error message: 1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
+	}
+
+	@Test
+	public void testShowErrorPatientNotFound() {
+		Patient patient1 = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		Patient patient2 = new Patient("2", "Anna Verdi",
+				"Throat problem", "2026-07-02");
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Patient> listPatientsModel =
+						patientSwingView.getListPatientsModel();
+				listPatientsModel.addElement(patient1);
+				listPatientsModel.addElement(patient2);
+			}
+		);
+		GuiActionRunner.execute(
+			() -> patientSwingView.showErrorPatientNotFound("error message", patient1)
+		);
+		window.label("errorMessageLabel")
+			.requireText("error message: 1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
+		assertThat(window.list().contents())
+			.containsExactly("2 - Anna Verdi - Throat problem - 2026-07-02");
 	}
 
 	private void enterPatientData(String id, String name, String problem, String admitDate) {
