@@ -8,10 +8,12 @@ public class PatientTest {
 
 	@Test
 	public void testToString() {
-		Patient patient = new Patient("3", "Viviana");
+		Patient patient = new Patient("3", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
 
 		assertThat(patient)
-			.hasToString("Patient [id=3, name=Viviana]");
+			.hasToString("Patient [id=3, name=Giuseppe Bianchi, "
+					+ "problem=Cardiac problem, admitDate=2026-07-01]");
 	}
 
 	@Test
