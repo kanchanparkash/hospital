@@ -198,6 +198,25 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 				"Cardiac problem", "2026-07-01"));
 	}
 
+	@Test
+	public void testDeleteButtonShouldDelegateToHospitalControllerDeletePatient() {
+		Patient patient1 = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		Patient patient2 = new Patient("2", "Anna Verdi",
+				"Throat problem", "2026-07-02");
+		GuiActionRunner.execute(
+			() -> {
+				DefaultListModel<Patient> listPatientsModel =
+						patientSwingView.getListPatientsModel();
+				listPatientsModel.addElement(patient1);
+				listPatientsModel.addElement(patient2);
+			}
+		);
+		window.list("patientList").selectItem(1);
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+		verify(hospitalController).deletePatient(patient2);
+	}
+
 	private void enterPatientData(String id, String name, String problem, String admitDate) {
 		window.textBox("idTextBox").enterText(id);
 		window.textBox("nameTextBox").enterText(name);
