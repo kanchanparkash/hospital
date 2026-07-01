@@ -1,6 +1,7 @@
 package com.examples.hospital.view.swing;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 import java.util.Arrays;
 
@@ -16,7 +17,10 @@ import org.assertj.swing.junit.runner.GUITestRunner;
 import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import com.examples.hospital.controller.HospitalController;
 import com.examples.hospital.model.Patient;
 
 @RunWith(GUITestRunner.class)
@@ -26,14 +30,26 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 
 	private PatientSwingView patientSwingView;
 
+	@Mock
+	private HospitalController hospitalController;
+
+	private AutoCloseable closeable;
+
 	@Override
 	protected void onSetUp() {
+		closeable = MockitoAnnotations.openMocks(this);
 		GuiActionRunner.execute(() -> {
 			patientSwingView = new PatientSwingView();
+			patientSwingView.setHospitalController(hospitalController);
 			return patientSwingView;
 		});
 		window = new FrameFixture(robot(), patientSwingView);
 		window.show();
+	}
+
+	@Override
+	protected void onTearDown() throws Exception {
+		closeable.close();
 	}
 
 	@Test @GUITest
@@ -172,6 +188,14 @@ public class PatientSwingViewTest extends AssertJSwingJUnitTestCase {
 		assertThat(listContents)
 			.containsExactly("2 - Anna Verdi - Throat problem - 2026-07-02");
 		window.label("errorMessageLabel").requireText(" ");
+	}
+
+	@Test
+	public void testAddButtonShouldDelegateToHospitalControllerNewPatient() {
+		enterPatientData("1", "Giuseppe Bianchi", "Cardiac problem", "2026-07-01");
+		window.button(JButtonMatcher.withText("Add")).click();
+		verify(hospitalController).newPatient(new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01"));
 	}
 
 	private void enterPatientData(String id, String name, String problem, String admitDate) {
