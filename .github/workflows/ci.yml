@@ -8,6 +8,7 @@ jobs:
   build:
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
@@ -39,3 +40,7 @@ jobs:
         -Dsonar.projectKey=kanchanparkash_hospital
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Send coverage to Coveralls
+      run: >
+        mvn -B -Pcoveralls coveralls:report
+      if: ${{ env.COVERALLS_REPO_TOKEN }}
