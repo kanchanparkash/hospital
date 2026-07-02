@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.net.InetSocketAddress;
 
 import org.assertj.swing.annotation.GUITest;
+import org.assertj.swing.core.matcher.JButtonMatcher;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
 import org.assertj.swing.junit.runner.GUITestRunner;
@@ -89,4 +90,16 @@ public class PatientSwingViewIT extends AssertJSwingJUnitTestCase {
 					"1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01",
 					"2 - Anna Verdi - Throat problem - 2026-07-02");
 	}
+
+	@Test @GUITest
+	public void testAddButtonSuccess() {
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("nameTextBox").enterText("Giuseppe Bianchi");
+		window.textBox("problemTextBox").enterText("Cardiac problem");
+		window.textBox("admitDateTextBox").enterText("2026-07-01");
+		window.button(JButtonMatcher.withText("Add")).click();
+		assertThat(window.list().contents())
+			.containsExactly("1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
+	}
+
 }
