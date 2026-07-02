@@ -118,4 +118,15 @@ public class PatientSwingViewIT extends AssertJSwingJUnitTestCase {
 					+ "1 - Anna Verdi - Throat problem - 2026-07-02");
 	}
 
+	@Test @GUITest
+	public void testDeleteButtonSuccess() {
+		GuiActionRunner.execute(
+			() -> hospitalController.newPatient(new Patient("1", "Giuseppe Bianchi",
+					"Cardiac problem", "2026-07-01")));
+		window.list().selectItem(0);
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+		assertThat(window.list().contents())
+			.isEmpty();
+	}
+
 }
