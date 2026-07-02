@@ -59,4 +59,12 @@ public class HospitalControllerIT {
 			.showAllPatients(asList(patient));
 	}
 
+	@Test
+	public void testNewPatient() {
+		Patient patient = new Patient("1", "Giuseppe Bianchi", "Cardiac problem",
+				"2026-07-02");
+		hospitalController.newPatient(patient);
+		verify(patientView).patientAdded(patient);
+	}
+
 }
