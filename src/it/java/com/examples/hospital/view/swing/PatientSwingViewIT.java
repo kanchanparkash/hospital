@@ -102,4 +102,20 @@ public class PatientSwingViewIT extends AssertJSwingJUnitTestCase {
 			.containsExactly("1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
 	}
 
+	@Test @GUITest
+	public void testAddButtonError() {
+		patientRepository.save(new Patient("1", "Anna Verdi",
+				"Throat problem", "2026-07-02"));
+		window.textBox("idTextBox").enterText("1");
+		window.textBox("nameTextBox").enterText("Giuseppe Bianchi");
+		window.textBox("problemTextBox").enterText("Cardiac problem");
+		window.textBox("admitDateTextBox").enterText("2026-07-01");
+		window.button(JButtonMatcher.withText("Add")).click();
+		assertThat(window.list().contents())
+			.isEmpty();
+		window.label("errorMessageLabel")
+			.requireText("Already existing patient with id 1: "
+					+ "1 - Anna Verdi - Throat problem - 2026-07-02");
+	}
+
 }
