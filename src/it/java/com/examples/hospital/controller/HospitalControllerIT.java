@@ -67,4 +67,13 @@ public class HospitalControllerIT {
 		verify(patientView).patientAdded(patient);
 	}
 
+	@Test
+	public void testDeletePatient() {
+		Patient patientToDelete = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-02");
+		patientRepository.save(patientToDelete);
+		hospitalController.deletePatient(patientToDelete);
+		verify(patientView).patientRemoved(patientToDelete);
+	}
+
 }
