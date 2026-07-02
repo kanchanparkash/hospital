@@ -129,4 +129,19 @@ public class PatientSwingViewIT extends AssertJSwingJUnitTestCase {
 			.isEmpty();
 	}
 
+	@Test @GUITest
+	public void testDeleteButtonError() {
+		Patient patient = new Patient("1", "Giuseppe Bianchi",
+				"Cardiac problem", "2026-07-01");
+		GuiActionRunner.execute(
+			() -> patientSwingView.getListPatientsModel().addElement(patient));
+		window.list().selectItem(0);
+		window.button(JButtonMatcher.withText("Delete Selected")).click();
+		assertThat(window.list().contents())
+			.isEmpty();
+		window.label("errorMessageLabel")
+			.requireText("No existing patient with id 1: "
+					+ "1 - Giuseppe Bianchi - Cardiac problem - 2026-07-01");
+	}
+
 }
