@@ -1,0 +1,46 @@
+name: Java CI with Maven, Docker and SonarCloud in Linux
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+    - name: Set up JDK
+      uses: actions/setup-java@v5
+      with:
+        java-version: 17
+        distribution: 'temurin'
+    - name: Cache Maven packages
+      uses: actions/cache@v5
+      with:
+        path: |
+          ~/.m2
+          ~/.sonar/cache
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml', '**/*.yml') }}
+        restore-keys: ${{ runner.os }}-m2-
+    - name: Set Maven Additional Goals
+      run: |
+        echo "SONARGOAL=sonar:sonar" >> $GITHUB_ENV
+      if: ${{ env.SONAR_TOKEN }}
+    - name: Build with Maven and SonarCloud
+      run: >
+        xvfb-run mvn verify -Pjacoco $SONARGOAL
+        -Dsonar.organization=kanchanparkash
+        -Dsonar.host.url=https://sonarcloud.io
+        -Dsonar.projectKey=kanchanparkash_hospital
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    - name: Send coverage to Coveralls
+      run: >
+        mvn -B -Pcoveralls coveralls:report
+      if: ${{ env.COVERALLS_REPO_TOKEN }}

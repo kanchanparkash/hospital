@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import com.examples.hospital.controller.HospitalController;
@@ -54,7 +55,7 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	public PatientSwingView() {
 		setTitle("Patient View");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -218,7 +219,7 @@ public class PatientSwingView extends JFrame implements PatientView {
 
 	@Override
 	public void showAllPatients(List<Patient> patients) {
-		patients.stream().forEach(listPatientsModel::addElement);
+		patients.forEach(listPatientsModel::addElement);
 	}
 
 	@Override
